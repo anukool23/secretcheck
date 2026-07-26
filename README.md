@@ -9,6 +9,8 @@ Written in Go with zero third-party dependencies, distributed as a single
 binary. The same binary powers native installs in Go, npm, and PyPI
 projects, so one tool works across polyglot repos.
 
+**Full docs:** [docs.anukool.me/secretcheck](https://docs.anukool.me/secretcheck)
+
 ## Install
 
 Pick whichever matches how your project already installs its tools — they

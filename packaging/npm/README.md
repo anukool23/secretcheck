@@ -22,7 +22,7 @@ Each `platforms/*/bin/` directory is empty in source control (just a
 `.gitkeep`) — the release workflow copies the matching binary from
 GoReleaser's `dist/` output into `platforms/<name>/bin/secretcheck[.exe]`
 right before publishing that platform package. See
-`.github/workflows/release.yml`.
+`.github/workflows/release-npm.yml`.
 
 **Version numbers must stay in lockstep.** The main package's
 `optionalDependencies` versions, and every platform package's own

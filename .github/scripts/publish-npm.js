@@ -128,9 +128,33 @@ writeJson(mainPkgPath, mainPkg);
 //    optionalDependencies resolve immediately for anyone installing it.
 //    Each publish is skipped if that exact name@version is already live,
 //    so re-running this script after a partial failure is safe.
+//
+//    A platform package failing to publish (e.g. npm's anti-spam scanner
+//    blocking a package with a bundled .exe) does NOT stop the others or
+//    the main package: npm's optionalDependencies mechanism already
+//    tolerates a listed optional version that doesn't exist — `npm install`
+//    just warns and skips it, it doesn't fail. So one blocked platform
+//    should never prevent everyone else from getting a working release.
+const failures = [];
 for (const p of PLATFORMS) {
-  publish(path.join(NPM_DIR, "platforms", p.dir), p.pkg, VERSION);
+  try {
+    publish(path.join(NPM_DIR, "platforms", p.dir), p.pkg, VERSION);
+  } catch (err) {
+    console.error(`\n>> FAILED to publish ${p.pkg}@${VERSION}: ${err.message}`);
+    console.error(">> Continuing with the remaining packages — this one can be retried later.");
+    failures.push(p.pkg);
+  }
 }
 publish(mainDir, mainPkg.name, VERSION);
 
-console.log("\nAll npm packages published.");
+if (failures.length > 0) {
+  console.error(
+    `\n${failures.length} package(s) failed to publish: ${failures.join(", ")}.\n` +
+      "Everything else published successfully. Once the underlying issue is resolved " +
+      "(e.g. npm support clears an anti-spam flag), re-run this script/workflow with the " +
+      "same VERSION — already-published packages are skipped automatically."
+  );
+  process.exitCode = 1;
+} else {
+  console.log("\nAll npm packages published.");
+}
