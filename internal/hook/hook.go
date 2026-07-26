@@ -72,11 +72,9 @@ func ResolveTarget(dir string) (Target, error) {
 // InstallStatus reports what Install actually did.
 type InstallStatus string
 
-const (
-	Created           InstallStatus = "created"
-	Updated           InstallStatus = "updated"
-	AlreadyInstalled  InstallStatus = "already-installed"
-)
+const Created InstallStatus = "created"
+const Updated InstallStatus = "updated"
+const AlreadyInstalled InstallStatus = "already-installed"
 
 // Install writes (or merges) the secretcheck block into the pre-commit
 // hook. If force is false and the block is already present, it is left
@@ -136,11 +134,9 @@ func Install(dir string, force bool) (InstallStatus, error) {
 // UninstallStatus reports what Uninstall actually did.
 type UninstallStatus string
 
-const (
-	Removed      UninstallStatus = "removed"
-	NotInstalled UninstallStatus = "not-installed"
-	DeletedFile  UninstallStatus = "deleted-file"
-)
+const Removed UninstallStatus = "removed"
+const NotInstalled UninstallStatus = "not-installed"
+const DeletedFile UninstallStatus = "deleted-file"
 
 // Uninstall removes the secretcheck block from the pre-commit hook,
 // deleting the file entirely if nothing else remains in it.
