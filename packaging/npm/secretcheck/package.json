@@ -1,6 +1,6 @@
 {
   "name": "secretcheck",
-  "version": "0.1.0",
+  "version": "1.0.4",
   "description": "Git pre-commit secret scanner (Go binary under the hood). Blocks commits that contain API keys, tokens, and credentials, with a clear option to override.",
   "keywords": [
     "git",
@@ -29,10 +29,10 @@
     "node": ">=14"
   },
   "optionalDependencies": {
-    "secretcheck-darwin-arm64": "0.1.0",
-    "secretcheck-darwin-x64": "0.1.0",
-    "secretcheck-linux-arm64": "0.1.0",
-    "secretcheck-linux-x64": "0.1.0",
-    "secretcheck-win32-x64": "0.1.0"
+    "secretcheck-darwin-arm64": "1.0.4",
+    "secretcheck-darwin-x64": "1.0.4",
+    "secretcheck-linux-arm64": "1.0.4",
+    "secretcheck-linux-x64": "1.0.4",
+    "secretcheck-win32-x64": "1.0.4"
   }
 }
