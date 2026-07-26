@@ -42,7 +42,25 @@ function writeJson(file, obj) {
   fs.writeFileSync(file, JSON.stringify(obj, null, 2) + "\n");
 }
 
-function publish(dir) {
+// Returns true if name@version is already live on the registry. Used to
+// make this script safely re-runnable: npm permanently refuses to publish
+// over an existing version, so on a partial failure (one package rejected,
+// e.g. by npm's anti-abuse scanner) we must skip everything that already
+// succeeded rather than re-attempting it.
+function alreadyPublished(name, version) {
+  try {
+    execFileSync("npm", ["view", `${name}@${version}`, "version"], { stdio: "pipe" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function publish(dir, name, version) {
+  if (alreadyPublished(name, version)) {
+    console.log(`\n>> ${name}@${version} is already published — skipping.`);
+    return;
+  }
   console.log(`\n>> npm publish ${dir}`);
   execFileSync("npm", ["publish", "--access", "public"], { cwd: dir, stdio: "inherit" });
 }
@@ -108,9 +126,11 @@ writeJson(mainPkgPath, mainPkg);
 
 // 3. Publish platform packages first, then the main package, so its
 //    optionalDependencies resolve immediately for anyone installing it.
+//    Each publish is skipped if that exact name@version is already live,
+//    so re-running this script after a partial failure is safe.
 for (const p of PLATFORMS) {
-  publish(path.join(NPM_DIR, "platforms", p.dir));
+  publish(path.join(NPM_DIR, "platforms", p.dir), p.pkg, VERSION);
 }
-publish(mainDir);
+publish(mainDir, mainPkg.name, VERSION);
 
 console.log("\nAll npm packages published.");
