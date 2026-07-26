@@ -1,0 +1,67 @@
+name: release-pypi
+
+# Triggered by the same tag push as release-go.yml and release-npm.yml,
+# but fully self-contained: it builds its own copy of the Go binaries
+# (via `goreleaser build`, which only compiles — it does not touch
+# GitHub Releases, so it can't collide with release-go.yml running the
+# same tag) and then builds + uploads the PyPI wheels.
+#
+# This is deliberately its own workflow file so that a PyPI-side failure
+# can never block the Go release or the npm publish, and vice versa —
+# in particular, an npm registry issue (like the anti-spam flag we hit)
+# no longer prevents PyPI from shipping.
+#
+# Required repository secret:
+#   PYPI_API_TOKEN - PyPI API token (account-scoped for first publish)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Derive version from tag
+        id: version
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build binaries with GoReleaser (build-only, no GitHub release)
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: build --clean
+
+      - name: Build wheels
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip build twine
+          sed -i "s/^version = .*/version = \"${VERSION}\"/" packaging/pypi/pyproject.toml
+          cd packaging/pypi
+          ./build_wheels.sh
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: python -m twine upload packaging/pypi/wheelhouse/*.whl

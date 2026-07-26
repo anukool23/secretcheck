@@ -1,0 +1,50 @@
+name: release-go
+
+# Triggered by pushing a semver tag, e.g.:
+#   git tag v1.0.3 && git push origin v1.0.3
+#
+# Cross-compiles the Go binary for all platforms with GoReleaser and
+# creates a GitHub Release with the archives + checksums. This is the
+# only thing "publishing" the Go module actually needs — `go install
+# github.com/anukool23/secretcheck/cmd/secretcheck@v1.0.3` resolves
+# directly from the pushed tag via the Go module proxy, no separate
+# publish step required.
+#
+# Deliberately independent from release-npm.yml and release-pypi.yml:
+# each workflow builds its own binaries from scratch, so a failure in
+# one (e.g. npm's anti-spam scanner) can never block this one, and this
+# one failing can't block npm/PyPI either.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Run Go tests
+        run: go test ./...
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -134,7 +134,12 @@ packaging/
   npm/                    main npm shim package + 5 per-platform binary packages
   pypi/                   pyproject.toml/setup.py + per-platform wheel build script
 .goreleaser.yaml           cross-platform build config
-.github/workflows/         ci.yml (test on every push/PR) and release.yml (publish on tag)
+.github/workflows/         ci.yml (test on every push/PR), plus three independent
+                            release workflows triggered by a version tag:
+                            release-go.yml (GoReleaser + GitHub Release),
+                            release-npm.yml (npm packages), release-pypi.yml
+                            (PyPI wheels) — each builds its own binaries, so a
+                            failure in one can never block the other two
 ```
 
 No third-party Go dependencies — smaller attack surface for a security
@@ -157,12 +162,21 @@ go test ./...
    git tag v0.1.0
    git push origin v0.1.0
    ```
-3. `.github/workflows/release.yml` takes it from there: GoReleaser builds
-   and publishes the GitHub Release, then the workflow stages and
-   publishes the npm packages and PyPI wheels from those same binaries.
-4. The Go module needs no separate publish step — `go install
-   github.com/anukool23/secretcheck/cmd/secretcheck@v0.1.0` resolves
-   directly from the pushed tag via the Go module proxy.
+3. That single tag push triggers three independent workflows in parallel:
+   - `release-go.yml` — runs GoReleaser to cross-compile binaries and
+     publish the GitHub Release. This is also all the Go module needs —
+     `go install github.com/anukool23/secretcheck/cmd/secretcheck@v0.1.0`
+     resolves directly from the pushed tag via the Go module proxy.
+   - `release-npm.yml` — builds its own copy of the binaries
+     (`goreleaser build`, no GitHub Release side effects) and publishes
+     the npm packages.
+   - `release-pypi.yml` — likewise builds its own binaries and publishes
+     the PyPI wheels.
+
+   Each workflow is fully self-contained, so a failure in one (say, npm's
+   anti-spam scanner flagging a package) can't block the other two, and
+   re-running a failed workflow doesn't re-touch the ones that already
+   succeeded.
 
 To test packaging locally without waiting on CI (this stages real files and
 will actually publish if you have npm auth configured, so review
