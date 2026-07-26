@@ -1,0 +1,16 @@
+/bin/
+/dist/
+node_modules/
+*.log
+.DS_Store
+
+# npm/PyPI packaging build artifacts (binaries are copied in at release time)
+packaging/npm/platforms/*/bin/*
+!packaging/npm/platforms/*/bin/.gitkeep
+!packaging/npm/platforms/*/bin/.gitignore
+packaging/pypi/src/secretcheck/bin/*
+!packaging/pypi/src/secretcheck/bin/.gitkeep
+!packaging/pypi/src/secretcheck/bin/.gitignore
+packaging/pypi/build/
+packaging/pypi/wheelhouse/
+packaging/pypi/src/secretcheck.egg-info/

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "secretcheck"
+version = "0.1.0"
+description = "Git pre-commit secret scanner (Go binary under the hood). Blocks commits that contain API keys, tokens, and credentials, with a clear option to override."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Anukool Patel", email = "aanukool.patel@gmail.com" }]
+requires-python = ">=3.8"
+keywords = ["git", "pre-commit", "secrets", "security", "credentials"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Microsoft :: Windows",
+  "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/anukool23/secretcheck"
+Repository = "https://github.com/anukool23/secretcheck"
+
+[project.scripts]
+secretcheck = "secretcheck.__main__:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+secretcheck = ["bin/secretcheck", "bin/secretcheck.exe"]

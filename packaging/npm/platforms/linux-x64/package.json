@@ -1,0 +1,14 @@
+{
+  "name": "secretcheck-linux-x64",
+  "version": "0.1.0",
+  "description": "Prebuilt secretcheck binary for Linux (x64). Installed automatically as an optionalDependency of the \"secretcheck\" package — not meant to be installed directly.",
+  "license": "MIT",
+  "author": "Anukool Patel <aanukool.patel@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anukool23/secretcheck.git"
+  },
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": ["bin"]
+}

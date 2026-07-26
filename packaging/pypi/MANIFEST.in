@@ -1,0 +1,2 @@
+include src/secretcheck/bin/secretcheck
+include src/secretcheck/bin/secretcheck.exe

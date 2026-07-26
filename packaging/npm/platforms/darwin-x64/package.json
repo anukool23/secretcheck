@@ -1,0 +1,14 @@
+{
+  "name": "secretcheck-darwin-x64",
+  "version": "0.1.0",
+  "description": "Prebuilt secretcheck binary for macOS (Intel). Installed automatically as an optionalDependency of the \"secretcheck\" package — not meant to be installed directly.",
+  "license": "MIT",
+  "author": "Anukool Patel <aanukool.patel@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anukool23/secretcheck.git"
+  },
+  "os": ["darwin"],
+  "cpu": ["x64"],
+  "files": ["bin"]
+}

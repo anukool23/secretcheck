@@ -1,0 +1,62 @@
+version: 2
+
+project_name: secretcheck
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: secretcheck
+    main: ./cmd/secretcheck
+    binary: secretcheck
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: secretcheck
+    ids:
+      - secretcheck
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "checksums.txt"
+
+# The npm and PyPI packaging steps (see packaging/) read the raw binaries
+# straight out of dist/<build id>_<os>_<arch>/secretcheck[.exe] rather than
+# the archives above, so they need the unpacked binaries kept around.
+snapshot:
+  name_template: "{{ .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  github:
+    owner: anukool23
+    name: secretcheck
+  prerelease: auto

@@ -1,0 +1,38 @@
+{
+  "name": "secretcheck",
+  "version": "0.1.0",
+  "description": "Git pre-commit secret scanner (Go binary under the hood). Blocks commits that contain API keys, tokens, and credentials, with a clear option to override.",
+  "keywords": [
+    "git",
+    "git-hook",
+    "pre-commit",
+    "secrets",
+    "secret-scanning",
+    "security",
+    "credentials",
+    "api-key"
+  ],
+  "license": "MIT",
+  "author": "Anukool Patel <aanukool.patel@gmail.com>",
+  "homepage": "https://github.com/anukool23/secretcheck",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anukool23/secretcheck.git"
+  },
+  "bin": {
+    "secretcheck": "bin/secretcheck.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "optionalDependencies": {
+    "secretcheck-darwin-arm64": "0.1.0",
+    "secretcheck-darwin-x64": "0.1.0",
+    "secretcheck-linux-arm64": "0.1.0",
+    "secretcheck-linux-x64": "0.1.0",
+    "secretcheck-win32-x64": "0.1.0"
+  }
+}
