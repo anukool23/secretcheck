@@ -11,7 +11,7 @@ const PLATFORM_PACKAGES = {
   "darwin-x64": "secretcheck-darwin-x64",
   "linux-arm64": "secretcheck-linux-arm64",
   "linux-x64": "secretcheck-linux-x64",
-  "win32-x64": "secretcheck-win32-x64",
+  "win32-x64": "secretcheck-windows-x64",
 };
 
 function resolveBinary() {

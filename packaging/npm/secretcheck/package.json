@@ -33,6 +33,6 @@
     "secretcheck-darwin-x64": "1.0.4",
     "secretcheck-linux-arm64": "1.0.4",
     "secretcheck-linux-x64": "1.0.4",
-    "secretcheck-win32-x64": "1.0.4"
+    "secretcheck-windows-x64": "1.0.4"
   }
 }

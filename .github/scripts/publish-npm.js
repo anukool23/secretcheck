@@ -31,7 +31,7 @@ const PLATFORMS = [
   { dir: "darwin-x64", pkg: "secretcheck-darwin-x64", goos: "darwin", goarch: "amd64", binary: "secretcheck" },
   { dir: "linux-arm64", pkg: "secretcheck-linux-arm64", goos: "linux", goarch: "arm64", binary: "secretcheck" },
   { dir: "linux-x64", pkg: "secretcheck-linux-x64", goos: "linux", goarch: "amd64", binary: "secretcheck" },
-  { dir: "win32-x64", pkg: "secretcheck-win32-x64", goos: "windows", goarch: "amd64", binary: "secretcheck.exe" },
+  { dir: "win32-x64", pkg: "secretcheck-windows-x64", goos: "windows", goarch: "amd64", binary: "secretcheck.exe" },
 ];
 
 function readJson(file) {

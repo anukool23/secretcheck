@@ -15,7 +15,7 @@ packaging/npm/
     darwin-x64/package.json    published as "secretcheck-darwin-x64"
     linux-arm64/package.json   published as "secretcheck-linux-arm64"
     linux-x64/package.json     published as "secretcheck-linux-x64"
-    win32-x64/package.json     published as "secretcheck-win32-x64"
+    win32-x64/package.json     published as "secretcheck-windows-x64"
 ```
 
 Each `platforms/*/bin/` directory is empty in source control (just a

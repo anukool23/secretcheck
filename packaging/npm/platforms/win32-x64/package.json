@@ -1,5 +1,5 @@
 {
-  "name": "secretcheck-win32-x64",
+  "name": "secretcheck-windows-x64",
   "version": "0.1.0",
   "description": "Prebuilt secretcheck binary for Windows (x64). Installed automatically as an optionalDependency of the \"secretcheck\" package — not meant to be installed directly.",
   "license": "MIT",
